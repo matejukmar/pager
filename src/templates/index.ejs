@@ -1,0 +1,33 @@
+<html>
+
+<head>
+  <title><%= htmlWebpackPlugin.options.title || 'Page'%></title>
+  <meta charset="utf-8">
+<% 
+  for (var meta in htmlWebpackPlugin.options.meta) {
+    print(`  <meta name="${meta}" content="${htmlWebpackPlugin.options.meta[meta]}">\n`)
+  }
+  if (htmlWebpackPlugin.options.mobile) {
+    print(`  <meta name="viewport" content="width=device-width, initial-scale=1">\n`)
+  } 
+  for (var css in htmlWebpackPlugin.files.css) {
+    print(`  <link href="${htmlWebpackPlugin.files.css[css]}" rel="stylesheet">\n`)
+  }
+  for (var chunk in htmlWebpackPlugin.files.chunks) { 
+    if (chunk !== htmlWebpackPlugin.options.pageChunk) {
+      print(`  <script src="${htmlWebpackPlugin.files.chunks[chunk].entry}"></script>\n`)
+    }
+  }
+  %></head>
+
+<body>
+  <div id="root"></div>
+  <% 
+  for (var chunk in htmlWebpackPlugin.files.chunks) { 
+    if (chunk == htmlWebpackPlugin.options.pageChunk) {
+      print(`<script src="${htmlWebpackPlugin.files.chunks[chunk].entry}"></script>\n`)
+    }
+  }
+  %></body>
+
+</html>
